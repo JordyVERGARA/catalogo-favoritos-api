@@ -1,5 +1,3 @@
-// Crea las tablas y carga los productos de ejemplo ejecutando db/schema.sql
-// ATENCIÓN: borra y recrea las tablas. Uso: npm run db:init
 require('dotenv').config({ quiet: true });
 const fs = require('fs');
 const path = require('path');

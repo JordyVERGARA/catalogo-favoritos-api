@@ -1,4 +1,3 @@
-// Acceso a datos: tabla productos (consultas parametrizadas)
 const { query } = require('../config/db');
 
 const COLUMNAS = 'id, nombre, descripcion, categoria, precio::float AS precio, creado_en, actualizado_en';
@@ -29,7 +28,6 @@ const crear = async ({ nombre, descripcion, categoria, precio }) => {
   return rows[0];
 };
 
-// Actualización parcial: solo cambia los campos enviados (COALESCE conserva los demás)
 const actualizar = async (id, { nombre, descripcion, categoria, precio }) => {
   const { rows } = await query(
     `UPDATE productos SET
@@ -45,7 +43,6 @@ const actualizar = async (id, { nombre, descripcion, categoria, precio }) => {
   return rows[0];
 };
 
-// Al eliminar, los favoritos asociados se borran por ON DELETE CASCADE
 const eliminar = async (id) => {
   const { rows } = await query(`DELETE FROM productos WHERE id = $1 RETURNING ${COLUMNAS}`, [id]);
   return rows[0];

@@ -4,7 +4,6 @@ const Usuarios = require('../models/usuarios.model');
 const { responder, ErrorHttp } = require('../utils/http');
 const { validarRegistro, validarLogin } = require('../utils/validaciones');
 
-// POST /api/auth/registro  (público)
 const registro = async (req, res) => {
   const { nombre, email, password } = validarRegistro(req.body || {});
 
@@ -12,19 +11,16 @@ const registro = async (req, res) => {
   if (existente) throw new ErrorHttp(409, 'El correo ya está registrado');
 
   const passwordHash = await bcrypt.hash(password, 10);
-  // El rol se fija en "usuario"; se ignora cualquier "rol" enviado por el cliente
   const usuario = await Usuarios.crear({ nombre, email, passwordHash, rol: 'usuario' });
 
   return responder(res, 201, usuario, 'Usuario registrado correctamente');
 };
 
-// POST /api/auth/login  (público)
 const login = async (req, res) => {
   const { email, password } = validarLogin(req.body || {});
 
   const usuario = await Usuarios.buscarPorEmailConHash(email);
   const valido = usuario && (await bcrypt.compare(password, usuario.password_hash));
-  // Mismo mensaje para correo inexistente o contraseña incorrecta (no revela cuál falló)
   if (!valido) throw new ErrorHttp(401, 'Credenciales incorrectas');
 
   const token = jwt.sign(

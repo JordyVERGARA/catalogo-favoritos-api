@@ -1,13 +1,7 @@
--- =========================================================
--- Catálogo de productos con favoritos y acceso por roles
--- Script SQL para PostgreSQL
--- =========================================================
-
 DROP TABLE IF EXISTS favoritos;
 DROP TABLE IF EXISTS productos;
 DROP TABLE IF EXISTS usuarios;
 
--- Usuarios: correo único, hash de contraseña y rol
 CREATE TABLE usuarios (
   id             SERIAL PRIMARY KEY,
   nombre         VARCHAR(100) NOT NULL,
@@ -18,7 +12,6 @@ CREATE TABLE usuarios (
   creado_en      TIMESTAMP    NOT NULL DEFAULT NOW()
 );
 
--- Productos: precio siempre mayor que cero
 CREATE TABLE productos (
   id             SERIAL PRIMARY KEY,
   nombre         VARCHAR(120)  NOT NULL,
@@ -29,9 +22,6 @@ CREATE TABLE productos (
   actualizado_en TIMESTAMP     NOT NULL DEFAULT NOW()
 );
 
--- Favoritos: relación usuario-producto sin duplicados.
--- ON DELETE CASCADE: si se elimina un producto (o usuario),
--- sus favoritos se eliminan automáticamente (datos consistentes).
 CREATE TABLE favoritos (
   usuario_id   INTEGER   NOT NULL REFERENCES usuarios(id)  ON DELETE CASCADE,
   producto_id  INTEGER   NOT NULL REFERENCES productos(id) ON DELETE CASCADE,
@@ -41,7 +31,6 @@ CREATE TABLE favoritos (
 
 CREATE INDEX idx_productos_categoria ON productos (LOWER(categoria));
 
--- Datos de ejemplo (ficticios)
 INSERT INTO productos (nombre, descripcion, categoria, precio) VALUES
   ('Laptop Andina 14',      'Portátil de 14 pulgadas, 16 GB RAM, 512 GB SSD', 'tecnologia', 749.99),
   ('Audífonos Pacífico',    'Audífonos inalámbricos con cancelación de ruido', 'tecnologia', 89.90),

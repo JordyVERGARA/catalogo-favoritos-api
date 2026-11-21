@@ -1,16 +1,9 @@
-// Validaciones del lado del servidor.
-// Criterio de códigos:
-//   400 Bad Request          -> petición mal formada: campos obligatorios ausentes o vacíos,
-//                               tipos incorrectos, campos no permitidos o identificador inválido.
-//   422 Unprocessable Entity -> petición bien formada pero que viola una regla de negocio:
-//                               precio <= 0, correo con formato inválido, contraseña corta.
 const { ErrorHttp } = require('./http');
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const textoVacio = (v) => typeof v !== 'string' || v.trim() === '';
 
-// Rechaza campos que no estén en la lista permitida
 const soloCampos = (body, permitidos) => {
   const extra = Object.keys(body).filter((k) => !permitidos.includes(k));
   if (extra.length) {
@@ -27,7 +20,6 @@ const validarId = (valor, nombre = 'id') => {
 };
 
 const validarRegistro = (body) => {
-  // "rol" se acepta pero se IGNORA: el registro público siempre crea rol "usuario"
   soloCampos(body, ['nombre', 'email', 'password', 'rol']);
   const vacios = ['nombre', 'email', 'password'].filter((c) => textoVacio(body[c]));
   if (vacios.length) throw new ErrorHttp(400, 'Faltan campos obligatorios', vacios.map((c) => `${c} es obligatorio`));
@@ -47,7 +39,6 @@ const validarLogin = (body) => {
   return { email: body.email.trim().toLowerCase(), password: body.password };
 };
 
-// parcial = true para PUT con actualización parcial (al menos un campo)
 const validarProducto = (body, parcial = false) => {
   const campos = ['nombre', 'descripcion', 'categoria', 'precio'];
   soloCampos(body, campos);

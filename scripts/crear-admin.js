@@ -1,6 +1,3 @@
-// Crea (o actualiza) el usuario administrador usando ADMIN_* del archivo .env
-// Es la ÚNICA forma de obtener rol admin: el registro público siempre crea "usuario".
-// Uso: npm run db:admin
 require('dotenv').config({ quiet: true });
 const bcrypt = require('bcryptjs');
 const { pool } = require('../src/config/db');

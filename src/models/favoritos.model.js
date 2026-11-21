@@ -1,4 +1,3 @@
-// Acceso a datos: tabla favoritos. Toda consulta filtra por usuario_id (propiedad).
 const { query } = require('../config/db');
 
 const listarPorUsuario = async (usuarioId) => {
@@ -21,7 +20,6 @@ const agregar = async (usuarioId, productoId) => {
   return rows[0];
 };
 
-// Solo borra si el favorito pertenece al usuario del token
 const quitar = async (usuarioId, productoId) => {
   const { rowCount } = await query(
     'DELETE FROM favoritos WHERE usuario_id = $1 AND producto_id = $2',

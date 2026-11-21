@@ -1,6 +1,3 @@
-// Formato JSON consistente para todas las respuestas
-
-// Éxito: { ok: true, mensaje?, data }
 const responder = (res, status, data, mensaje) => {
   const cuerpo = { ok: true };
   if (mensaje) cuerpo.mensaje = mensaje;
@@ -8,7 +5,6 @@ const responder = (res, status, data, mensaje) => {
   return res.status(status).json(cuerpo);
 };
 
-// Error controlado que el manejador central convierte en { ok: false, mensaje, errores? }
 class ErrorHttp extends Error {
   constructor(status, mensaje, errores) {
     super(mensaje);

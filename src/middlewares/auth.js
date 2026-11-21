@@ -1,10 +1,6 @@
-// Verificación del JWT y control de roles
 const jwt = require('jsonwebtoken');
 const { ErrorHttp } = require('../utils/http');
 
-// 1) Exige cabecera "Authorization: Bearer <token>"
-// 2) jwt.verify comprueba FIRMA y EXPIRACIÓN (exp)
-// 3) Guarda la identidad verificada en req.usuario (no se confía en ids enviados por el cliente)
 const verificarToken = (req, res, next) => {
   const cabecera = req.headers.authorization || '';
   const [tipo, token] = cabecera.split(' ');
@@ -23,7 +19,6 @@ const verificarToken = (req, res, next) => {
   }
 };
 
-// Uso: requiereRol('admin'). Debe ir después de verificarToken.
 const requiereRol = (...roles) => (req, res, next) => {
   if (!req.usuario || !roles.includes(req.usuario.rol)) {
     return next(new ErrorHttp(403, 'No tiene permisos para realizar esta acción'));

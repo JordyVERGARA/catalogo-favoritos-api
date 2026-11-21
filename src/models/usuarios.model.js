@@ -1,7 +1,5 @@
-// Acceso a datos: tabla usuarios
 const { query } = require('../config/db');
 
-// Columnas públicas: NUNCA se devuelve password_hash
 const PUBLICAS = 'id, nombre, email, rol, creado_en';
 
 const crear = async ({ nombre, email, passwordHash, rol = 'usuario' }) => {
@@ -12,7 +10,6 @@ const crear = async ({ nombre, email, passwordHash, rol = 'usuario' }) => {
   return rows[0];
 };
 
-// Solo para login: incluye el hash para compararlo, nunca se envía al cliente
 const buscarPorEmailConHash = async (email) => {
   const { rows } = await query('SELECT id, nombre, email, rol, password_hash FROM usuarios WHERE email = $1', [email]);
   return rows[0];

@@ -2,7 +2,6 @@ const Productos = require('../models/productos.model');
 const { responder, ErrorHttp } = require('../utils/http');
 const { validarId, validarProducto } = require('../utils/validaciones');
 
-// GET /api/productos?categoria=hogar  (público)
 const listar = async (req, res) => {
   const { categoria } = req.query;
   if (categoria !== undefined && (typeof categoria !== 'string' || categoria.trim() === '')) {
@@ -12,7 +11,6 @@ const listar = async (req, res) => {
   return responder(res, 200, productos);
 };
 
-// GET /api/productos/:id  (público)
 const obtener = async (req, res) => {
   const id = validarId(req.params.id);
   const producto = await Productos.buscarPorId(id);
@@ -20,14 +18,12 @@ const obtener = async (req, res) => {
   return responder(res, 200, producto);
 };
 
-// POST /api/productos  (admin)
 const crear = async (req, res) => {
   const datos = validarProducto(req.body || {});
   const producto = await Productos.crear(datos);
   return responder(res, 201, producto, 'Producto creado');
 };
 
-// PUT /api/productos/:id  (admin)
 const actualizar = async (req, res) => {
   const id = validarId(req.params.id);
   const datos = validarProducto(req.body || {}, true);
@@ -36,7 +32,6 @@ const actualizar = async (req, res) => {
   return responder(res, 200, producto, 'Producto actualizado');
 };
 
-// DELETE /api/productos/:id  (admin) — sus favoritos se eliminan en cascada
 const eliminar = async (req, res) => {
   const id = validarId(req.params.id);
   const producto = await Productos.eliminar(id);

@@ -9,7 +9,6 @@ if (!process.env.JWT_SECRET) {
   process.exit(1);
 }
 
-// Comprueba la conexión a la base de datos antes de escuchar
 pool.query('SELECT 1')
   .then(() => {
     app.listen(PORT, () => console.log(`API escuchando en http://localhost:${PORT}/api`));
